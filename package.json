@@ -1,0 +1,97 @@
+{
+  "name": "project-janitor",
+  "version": "0.0.1",
+  "description": "Keeps your project code clean and standardized.",
+  "activationEvents": [
+    "onCommand:janitor.cleanUpActiveDocument",
+    "onCommand:janitor.cleanUpProject"
+  ],
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "contributes": {
+    "commands": [{
+        "command": "janitor.cleanUpProject",
+        "title": "Project Janitor: Clean up project"
+      },
+      {
+        "command": "janitor.cleanUpActiveDocument",
+        "title": "Project Janitor: Clean up document"
+      }
+    ],
+    "configuration": {
+      "properties": {
+        "janitor.commands": {
+          "description": "The commands to execute for each file.",
+          "default": [
+            "editor.action.formatDocument"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "scope": "resource",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "janitor.excludePattern": {
+          "description": "Files to exclude for clean up",
+          "default": [
+            "**/assets/**/*",
+            "**/dist/**/*",
+            "**/node_modules/**/*"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "scope": "resource",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "janitor.includePattern": {
+          "description": "Files to include for clean up",
+          "default": [
+            "src/**/*.ts"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "scope": "resource",
+          "type": "array",
+          "uniqueItems": true
+        },
+        "janitor.skipConfirmation": {
+          "description": "Skips the confirmation before cleaning the entire project.",
+          "default": false,
+          "scope": "resource",
+          "type": "boolean"
+        }
+      },
+      "title": "Project Janitor"
+    }
+  },
+  "displayName": "Project Janitor",
+  "engines": {
+    "vscode": "^1.19.0"
+  },
+  "main": "./out/extension",
+  "publisher": "intuited",
+  "repository": "https://github.com/caseyrule/project-janitor",
+  "scripts": {
+    "clean": "rm -rf out",
+    "compile": "tsc -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "typescript-logging": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^7.0.43",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  }
+}
