@@ -7,14 +7,18 @@ import {
   LoggerType,
   LogGroupRule,
   LogLevel,
-  LogMessage,
+  LogMessage
 } from 'typescript-logging';
 import * as vscode from 'vscode';
+
+import {
+  LogGroupRuntimeSettings
+} from '../../node_modules/typescript-logging/dist/commonjs/log/standard/LoggerFactoryService';
 
 class VSLogger extends AbstractLogger {
   private outputChannel: vscode.OutputChannel;
 
-  private constructor(name: string, settings) {
+  private constructor(name: string, settings: LogGroupRuntimeSettings) {
     super(name, settings);
     this.outputChannel = vscode.window.createOutputChannel(name);
     this.outputChannel.show();
@@ -33,7 +37,7 @@ class VSLogger extends AbstractLogger {
           LogLevel.Trace,
           new LogFormat(),
           LoggerType.Custom,
-          (name, settings) => new VSLogger(name, settings)
+          (loggerName, settings) => new VSLogger(loggerName, settings)
         )
       )
     ).getLogger(name);

@@ -4,29 +4,30 @@
   "description": "Keeps your project code clean and standardized.",
   "activationEvents": [
     "onCommand:janitor.cleanUpActiveDocument",
-    "onCommand:janitor.cleanUpProject"
+    "onCommand:janitor.cleanUpProject",
+    "onCommand:janitor.validateFileNames"
   ],
-  "categories": [
-    "Formatters",
-    "Other"
-  ],
+  "categories": ["Formatters", "Other"],
   "contributes": {
-    "commands": [{
+    "commands": [
+      {
         "command": "janitor.cleanUpProject",
         "title": "Project Janitor: Clean up project"
       },
       {
         "command": "janitor.cleanUpActiveDocument",
         "title": "Project Janitor: Clean up document"
+      },
+      {
+        "command": "janitor.validateFileNames",
+        "title": "Project Janitor: Validate file names"
       }
     ],
     "configuration": {
       "properties": {
         "janitor.commands": {
           "description": "The commands to execute for each file.",
-          "default": [
-            "editor.action.formatDocument"
-          ],
+          "default": ["editor.action.formatDocument"],
           "items": {
             "type": "string"
           },
@@ -36,11 +37,7 @@
         },
         "janitor.excludePattern": {
           "description": "Files to exclude for clean up",
-          "default": [
-            "**/assets/**/*",
-            "**/dist/**/*",
-            "**/node_modules/**/*"
-          ],
+          "default": ["**/assets/**/*", "**/dist/**/*", "**/node_modules/**/*"],
           "items": {
             "type": "string"
           },
@@ -48,11 +45,23 @@
           "type": "array",
           "uniqueItems": true
         },
+        "janitor.fileRenameRules": {
+          "description": "Rules for standardizing file names.",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "match": "string",
+              "rename": "string"
+            }
+          },
+          "scope": "resource",
+          "type": "array",
+          "uniqueItems": true
+        },
         "janitor.includePattern": {
           "description": "Files to include for clean up",
-          "default": [
-            "src/**/*.ts"
-          ],
+          "default": ["src/**/*.ts"],
           "items": {
             "type": "string"
           },
@@ -74,24 +83,31 @@
   "engines": {
     "vscode": "^1.19.0"
   },
+  "license": "MIT",
   "main": "./out/extension",
   "publisher": "intuited",
   "repository": "https://github.com/caseyrule/project-janitor",
   "scripts": {
     "clean": "rm -rf out",
     "compile": "tsc -p ./",
+    "lint": "tslint -p tsconfig.json -c tslint.json -e './node_modules/**/*.ts' -e './typings/**/*.ts' '**/*.ts'",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test",
+    "validate": "nsp check",
     "vscode:prepublish": "npm run compile",
     "watch": "tsc -watch -p ./"
   },
   "dependencies": {
-    "typescript-logging": "^0.5.0"
+    "fs-extra": "^5.0.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.0",
     "@types/mocha": "^2.2.42",
     "@types/node": "^7.0.43",
+    "nsp": "^2.8.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.1",
+    "typescript-logging": "^0.5.0",
     "vscode": "^1.1.6"
   }
 }
