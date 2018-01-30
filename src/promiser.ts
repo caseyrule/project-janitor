@@ -1,5 +1,3 @@
-'use strict';
-
 type Result = boolean | number | string | object | Array<any> | void;
 export type Promised<T extends Result> = T | Thenable<T>;
 export type Supplied<T extends Result> = T | (() => T);
